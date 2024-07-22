@@ -102,3 +102,33 @@ $theme: mat.m2-define-light-theme((
 .mat-elevation-z10 {
   box-shadow: 0 6px 6px -3px #0003, 0 10px 14px 1px #00000024, 0 4px 18px 3px #0000001f !important;
 }
+
+/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-oldX(root) {
+  animation: 300ms fade-out;
+}
+
+::view-transition-new(.outlet) {
+  animation: 300ms fade-in;
+}

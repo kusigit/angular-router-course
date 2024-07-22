@@ -1,51 +1,43 @@
-import {Component, OnInit} from '@angular/core';
-import {Course, sortCoursesBySeqNo} from '../model/course';
-import {Observable} from 'rxjs';
-import {CoursesService} from "../services/courses.service";
-import {map} from "rxjs/operators";
-import {LoadingService} from "../../shared/loading/loading.service";
-
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+  Signal,
+} from "@angular/core";
+import { Course, sortCoursesBySeqNo } from "../model/course";
+import { Observable } from "rxjs";
+import { CoursesService } from "../services/courses.service";
+import { map } from "rxjs/operators";
+import { LoadingService } from "../../shared/loading/loading.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: "home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
 
-  beginnerCourses$: Observable<Course[]>;
-
-  advancedCourses$: Observable<Course[]>;
-
-  constructor(
-    private courses: CoursesService,
-    private loading: LoadingService) {
-
-  }
+  advancedCourses: Signal<Course[]>;
+  beginnerCourses: Signal<Course[]>;
+  courses: Signal<Course[]>;
+  // readonly courses = signal<Course[]>([]);
 
   ngOnInit() {
-
-      this.reloadCourses();
-
+    //    this.courses.set(this.route.snapshot.data["courses"].entities);
+    this.courses = this.route.snapshot.data["courses"].entities;
+    this.beginnerCourses = this.filterByCategory(this.courses, "BEGINNER");
+    this.advancedCourses = this.filterByCategory(this.courses, "ADVANCED");
   }
 
-  reloadCourses() {
-
-    const courses$ = this.courses.loadAllCourses();
-
-      this.beginnerCourses$ = this.filterByCategory(courses$, "BEGINNER");
-
-      this.advancedCourses$ = this.filterByCategory(courses$, "ADVANCED");
-
+  filterByCategory(courses: Signal<Course[]>, category: string) {
+    return computed(() =>
+      courses()
+        .filter((course) => course.category === category)
+        .sort(sortCoursesBySeqNo)
+    );
   }
-
-  filterByCategory(courses$: Observable<Course[]>, category:string) {
-    return this.loading.showLoaderUntilCompleted(courses$)
-      .pipe(
-        map(courses => courses.filter(course => course.category == category).sort(sortCoursesBySeqNo))
-      );
-  }
-
 }
-
-
