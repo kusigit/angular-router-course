@@ -17,7 +17,7 @@ export const CoursesStore = signalStore(
       service.loadAllCourses().pipe(
         map((entities) => {
           patchState(state, setEntities(entities));
-          return state;
+          return state.entities;
         }),
         catchError((error) => of(error))
         //  catchError((error) => {

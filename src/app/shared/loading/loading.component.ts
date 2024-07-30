@@ -13,7 +13,7 @@ import {
   selector: "loading",
   templateUrl: "./loading.component.html",
   styleUrls: ["./loading.component.css"],
-  //standalone: true,
+  // standalone: true,
   // imports: [MatProgressBarModule],
 })
 export class LoadingComponent {

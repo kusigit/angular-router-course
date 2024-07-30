@@ -6,7 +6,7 @@ import { Course } from "../model/course";
   selector: "course",
   templateUrl: "./course.component.html",
   styleUrls: ["./course.component.css"],
-  //  signal: true,
+  // signals: true,
 })
 export class CourseComponent implements OnInit {
   course: Course;

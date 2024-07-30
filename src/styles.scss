@@ -125,7 +125,7 @@ body {
   }
 }
 
-::view-transition-oldX(root) {
+::view-transition-old(.outlet) {
   animation: 300ms fade-out;
 }
 
